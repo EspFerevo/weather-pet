@@ -15,13 +15,13 @@
         return '' + this.city + ''
       },
       showFeelsLike() {
-        return 'Температура' + this.info.main.temp + ''
+        return 'Температура ' + this.info.main.temp + ''
       },
       showmMinTemp() {
-        return 'Відчувається як' + this.info.main.feels_like
+        return 'Відчувається як ' + this.info.main.feels_like
       },
       showMaxTemp() {
-        return 'Максимальна температура' + this.info.main.temp.max + ''
+        return 'Максимальна температура ' + this.info.main.temp_max + ''
       },
     },
 
