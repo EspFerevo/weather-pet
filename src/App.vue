@@ -1,16 +1,27 @@
-<!-- JS -->
+<!-- JS 
+6f8bfdec562b97623804ee44058a5bdf-->
 <script>
-import { IoRainyOutline } from 'oh-vue-icons/icons/io';
+  import { IoRainyOutline } from 'oh-vue-icons/icons/io'
 
   export default {
-    components: { 
-        IoRainyOutline
+    components: {
+      IoRainyOutline,
     },
 
     data() {
       return {
         city: '',
+        error: '',
       }
+    },
+    methods: {
+      getWeather() {
+        if (this.city.trim().length < 2) {
+          this.error = 'Мінімальна довжина 2 символи'
+          return false
+        }
+        this.error = ""
+      },
     },
   }
 </script>
@@ -18,12 +29,16 @@ import { IoRainyOutline } from 'oh-vue-icons/icons/io';
 <!-- HTML CODE -->
 <template>
   <div class="wrapper">
-    <h1>Weather <IoRainyOutline /></h1>
-    <p>Дізнайся погоду в {{ city == "" ? "твоєму місті" : city}}</p>
+    <h1>
+      Weather
+      <IoRainyOutline />
+    </h1>
+    <p>Дізнайся погоду в {{ city == '' ? 'твоєму місті' : city }}</p>
     <input type="text" v-model="city" placeholder="Введіть Ваше місто" />
-    <button v-if="city !='' ">Отримати погоду</button>
+    <button v-if="city != ''" @click="getWeather()">Отримати погоду</button>
     <button disabled v-else>Введіть назву міста</button>
 
+    <p class="error">{{ error }}</p>
   </div>
 </template>
 
@@ -132,9 +147,14 @@ import { IoRainyOutline } from 'oh-vue-icons/icons/io';
       0 0 30px #ff6347;
   }
 
-  .wrapper button:disabled { 
+  .wrapper button:disabled {
     background-color: rgb(22, 47, 55);
     cursor: not-allowed;
   }
 
+  .error {
+    margin-top: 20px;
+    color: black;
+    font-size: 30px;
+  }
 </style>
