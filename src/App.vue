@@ -1,26 +1,49 @@
-<!-- JS 
-6f8bfdec562b97623804ee44058a5bdf-->
+<!-- JS -->
 <script>
-  import { IoRainyOutline } from 'oh-vue-icons/icons/io'
+  import axios from 'axios'
 
   export default {
-    components: {
-      IoRainyOutline,
-    },
-
     data() {
       return {
         city: '',
         error: '',
+        info: null,
       }
     },
+    computed: {
+      showTemp() {
+        return '' + this.city + ''
+      },
+      showFeelsLike() {
+        return 'Температура' + this.info.main.temp + ''
+      },
+      showmMinTemp() {
+        return 'Відчувається як' + this.info.main.feels_like
+      },
+      showMaxTemp() {
+        return 'Максимальна температура' + this.info.main.temp.max + ''
+      },
+    },
+
     methods: {
       getWeather() {
         if (this.city.trim().length < 2) {
           this.error = 'Мінімальна довжина 2 символи'
           return false
         }
-        this.error = ""
+        this.error = ''
+
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=d56a4e2d7d9d9d40d68b02487d850b85`
+          )
+          .then(res => {
+            this.info = res.data
+          })
+          .catch(err => {
+            this.error = 'Ошибка при получении данных'
+            console.error(err)
+          })
       },
     },
   }
@@ -29,21 +52,25 @@
 <!-- HTML CODE -->
 <template>
   <div class="wrapper">
-    <h1>
-      Weather
-      <IoRainyOutline />
-    </h1>
+    <h1>Weather</h1>
     <p>Дізнайся погоду в {{ city == '' ? 'твоєму місті' : city }}</p>
-    <input type="text" v-model="city" placeholder="Введіть Ваше місто" />
+    <input class="input" type="text" v-model="city" placeholder="Введіть Ваше місто" />
     <button v-if="city != ''" @click="getWeather()">Отримати погоду</button>
     <button disabled v-else>Введіть назву міста</button>
-
     <p class="error">{{ error }}</p>
+
+    <div v-if="info != null">
+      <p>{{ showTemp }}</p>
+      <p>{{ showFeelsLike }}</p>
+      <p>{{ showmMinTemp }}</p>
+      <p>{{ showMaxTemp }}</p>
+    </div>
   </div>
 </template>
 
 <!-- STYLES -->
 <style scoped>
+
   .wrapper {
     width: 900px;
     height: 500px;
@@ -56,6 +83,10 @@
     position: relative;
     overflow: hidden;
   }
+
+  .input::placeholder {
+    color: white;
+}
 
   .wrapper::before {
     content: '';
