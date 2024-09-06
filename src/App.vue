@@ -1,6 +1,6 @@
 <!-- JS -->
 <script>
-import { IoRainyOutline } from "oh-vue-icons/icons";
+import { IoRainyOutline } from 'oh-vue-icons/icons/io';
 
   export default {
     components: { 
@@ -18,10 +18,12 @@ import { IoRainyOutline } from "oh-vue-icons/icons";
 <!-- HTML CODE -->
 <template>
   <div class="wrapper">
-    <h1>Weather <IoRainyOutline /> </h1>
+    <h1>Weather <IoRainyOutline /></h1>
     <p>Дізнайся погоду в {{ city == "" ? "твоєму місті" : city}}</p>
     <input type="text" v-model="city" placeholder="Введіть Ваше місто" />
-    <button>Отримати погоду</button>
+    <button v-if="city !='' ">Отримати погоду</button>
+    <button disabled v-else>Введіть назву міста</button>
+
   </div>
 </template>
 
@@ -128,6 +130,11 @@ import { IoRainyOutline } from "oh-vue-icons/icons";
       0 0 10px #ffa07a,
       0 0 20px #ff7f50,
       0 0 30px #ff6347;
+  }
+
+  .wrapper button:disabled { 
+    background-color: rgb(22, 47, 55);
+    cursor: not-allowed;
   }
 
 </style>
